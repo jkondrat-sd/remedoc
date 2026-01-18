@@ -1,5 +1,5 @@
-import { Job } from '@nemoventures/adonis-jobs'
-import type { BullJobsOptions } from '@nemoventures/adonis-jobs/types'
+import { Job } from '@boringnode/queue'
+import type { JobOptions } from '@boringnode/queue/types'
 import { type APIChannel, Routes } from 'discord-api-types/v10'
 import { and, eq } from 'drizzle-orm'
 import { DateTime } from 'luxon'
@@ -14,29 +14,20 @@ export type MedicationScheduleNotificationData = {
   timeOfDay: string
 }
 
-export type MedicationScheduleNotificationReturn = {
-  message: string
-  ok: boolean
-}
-
-export default class MedicationScheduleNotification extends Job<
-  MedicationScheduleNotificationData,
-  MedicationScheduleNotificationReturn
-> {
-  static options: BullJobsOptions = {}
+export default class MedicationScheduleNotificationJob extends Job<MedicationScheduleNotificationData> {
+  static options: JobOptions = {
+    queue: 'default',
+  }
 
   static makeId(options: MedicationScheduleNotificationData) {
     return `medication-schedule,user(${options.userId}),hour(${options.timeOfDay})`
   }
 
-  async process(): Promise<MedicationScheduleNotificationReturn> {
-    const [user] = await db.select().from(users).where(eq(users.id, this.data.userId)).limit(1)
+  async execute() {
+    const [user] = await db.select().from(users).where(eq(users.id, this.payload.userId)).limit(1)
 
     if (!user) {
-      return {
-        message: `Utilisateur #${this.data.userId} introuvable.`,
-        ok: false,
-      }
+      return
     }
 
     let result = await db
@@ -47,7 +38,7 @@ export default class MedicationScheduleNotification extends Job<
       .from(medicationSchedules)
       .where(
         and(
-          eq(medicationSchedules.timeOfDay, this.data.timeOfDay),
+          eq(medicationSchedules.timeOfDay, this.payload.timeOfDay),
           eq(medicationSchedules.active, true)
         )
       )
@@ -56,7 +47,7 @@ export default class MedicationScheduleNotification extends Job<
         and(
           eq(medications.id, medicationSchedules.medicationId),
           eq(medications.active, true),
-          eq(medications.userId, this.data.userId)
+          eq(medications.userId, this.payload.userId)
         )
       )
 
@@ -68,15 +59,12 @@ export default class MedicationScheduleNotification extends Job<
     })
 
     if (result.length === 0) {
-      return {
-        message: `Aucun horaire configuré à ${this.data.timeOfDay} pour l'utilisateur #${user.id}`,
-        ok: true,
-      }
+      return
     }
 
     const component = MedicationScheduleComponent.build({
       data: result,
-      timeOfDay: this.data.timeOfDay,
+      timeOfDay: this.payload.timeOfDay,
     })
 
     const channel = (await discord.post(Routes.userChannels(), {
@@ -85,9 +73,6 @@ export default class MedicationScheduleNotification extends Job<
 
     await discord.post(Routes.channelMessages(channel.id), { body: component.render() })
 
-    return {
-      message: 'Notification envoyé !',
-      ok: true,
-    }
+    return
   }
 }

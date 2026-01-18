@@ -10,15 +10,7 @@ export default defineConfig({
   | will be scanned automatically from the "./commands" directory.
   |
   */
-  commands: [
-    () => import('@adonisjs/core/commands'),
-    () => import('@tuyau/core/commands'),
-    () => import('@nemoventures/adonis-jobs/commands'),
-  ],
-
-  directories: {
-    jobs: 'app/jobs',
-  },
+  commands: [() => import('@adonisjs/core/commands'), () => import('@tuyau/core/commands')],
 
   /*
   |--------------------------------------------------------------------------
@@ -43,7 +35,7 @@ export default defineConfig({
     () => import('@adonisjs/ally/ally_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('@adonisjs/redis/redis_provider'),
-    () => import('@nemoventures/adonis-jobs/queue_provider'),
+    () => import('#queue/providers/queue_provider'),
   ],
 
   /*

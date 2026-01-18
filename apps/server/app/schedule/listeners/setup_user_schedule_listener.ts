@@ -1,4 +1,4 @@
-import { JobScheduler } from '@nemoventures/adonis-jobs'
+import { Schedule } from '@boringnode/queue'
 import { and, count, eq } from 'drizzle-orm'
 import { Settings } from 'luxon'
 
@@ -31,20 +31,16 @@ export default class SetupUserScheduleListener {
     const jobId = MedicationScheduleNotification.makeId(options)
 
     if (result.value === 0) {
-      await JobScheduler.remove(jobId)
+      const schedule = await Schedule.find(jobId)
+      await schedule?.delete()
       return
     }
 
     const [hour, minutes] = options.timeOfDay.split(':')
 
-    await JobScheduler.schedule({
-      job: MedicationScheduleNotification,
-      data: options,
-      key: jobId,
-      repeat: {
-        pattern: `${minutes} ${hour} * * *`,
-        tz: Settings.defaultLocale,
-      },
-    })
+    await MedicationScheduleNotification.schedule(options)
+      .cron(`${minutes} ${hour} * * *`)
+      .id(jobId)
+      .timezone(Settings.defaultLocale)
   }
 }
