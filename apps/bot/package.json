@@ -13,13 +13,13 @@
     "@repo/rpc": "workspace:^",
     "chalk": "^5.6.2",
     "discord.js": "14.25.1",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.3.1",
     "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:^",
     "@repo/prettier-config": "workspace:^",
-    "@types/node": "^24.9.2",
+    "@types/node": "^25.5.0",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "^5.9.3"
