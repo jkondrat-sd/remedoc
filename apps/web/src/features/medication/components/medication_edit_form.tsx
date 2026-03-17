@@ -43,16 +43,28 @@ export function MedicationEditForm({ medication }: MedicationEditFormProps) {
       instructions: medication.instructions || '',
     },
     onSubmit: async ({ value }) => {
-      await updateMedication(value, {
-        onSuccess: (data) => {
-          form.reset({
-            name: data.name,
-            dosage: data.dosage || '',
-            form: data.form || '',
-            instructions: data.instructions || '',
-          })
+      await updateMedication(
+        {
+          params: { medicationId: medication.id },
+          //@ts-ignore
+          body: {
+            ...value,
+            dosage: value.dosage.length ? value.dosage : null,
+            form: value.form.length ? value.form : null,
+            instructions: value.instructions.length ? value.instructions : null,
+          },
         },
-      })
+        {
+          onSuccess: (data) => {
+            form.reset({
+              name: data.name,
+              dosage: data.dosage || '',
+              form: data.form || '',
+              instructions: data.instructions || '',
+            })
+          },
+        }
+      )
     },
   })
 

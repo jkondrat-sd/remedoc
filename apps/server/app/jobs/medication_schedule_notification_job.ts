@@ -1,42 +1,34 @@
-import { Job } from '@nemoventures/adonis-jobs'
-import type { BullJobsOptions } from '@nemoventures/adonis-jobs/types'
+import { Job } from '@adonisjs/queue'
+import type { JobOptions } from '@adonisjs/queue/types'
+import { MedicationScheduleComponent } from '@repo/discord/components'
 import { type APIChannel, Routes } from 'discord-api-types/v10'
 import { and, eq } from 'drizzle-orm'
 import { DateTime } from 'luxon'
 
-import { db } from '#core/services/db/main'
-import { medications, medicationSchedules, users } from '#core/services/db/schema'
-import { discord } from '#discord/services/main'
-import { MedicationScheduleComponent } from '@repo/discord/components'
+import { db } from '#app/core/services/db/main'
+import { medications, medicationSchedules, users } from '#app/core/services/db/schema'
+import { discord } from '#app/discord/services/main'
 
-export type MedicationScheduleNotificationData = {
+export interface MedicationScheduleNotificationJobPayload {
   userId: number
   timeOfDay: string
 }
 
-export type MedicationScheduleNotificationReturn = {
-  message: string
-  ok: boolean
-}
-
-export default class MedicationScheduleNotification extends Job<
-  MedicationScheduleNotificationData,
-  MedicationScheduleNotificationReturn
-> {
-  static options: BullJobsOptions = {}
-
-  static makeId(options: MedicationScheduleNotificationData) {
-    return `medication-schedule,user(${options.userId}),hour(${options.timeOfDay})`
+export default class MedicationScheduleNotificationJob extends Job<MedicationScheduleNotificationJobPayload> {
+  static options: JobOptions = {
+    queue: 'default',
+    maxRetries: 3,
   }
 
-  async process(): Promise<MedicationScheduleNotificationReturn> {
-    const [user] = await db.select().from(users).where(eq(users.id, this.data.userId)).limit(1)
+  static makeId(payload: MedicationScheduleNotificationJobPayload) {
+    return `medication-schedule,user(${payload.userId}),hour(${payload.timeOfDay})`
+  }
+
+  async execute() {
+    const [user] = await db.select().from(users).where(eq(users.id, this.payload.userId)).limit(1)
 
     if (!user) {
-      return {
-        message: `Utilisateur #${this.data.userId} introuvable.`,
-        ok: false,
-      }
+      return
     }
 
     let result = await db
@@ -47,7 +39,7 @@ export default class MedicationScheduleNotification extends Job<
       .from(medicationSchedules)
       .where(
         and(
-          eq(medicationSchedules.timeOfDay, this.data.timeOfDay),
+          eq(medicationSchedules.timeOfDay, this.payload.timeOfDay),
           eq(medicationSchedules.active, true)
         )
       )
@@ -56,7 +48,7 @@ export default class MedicationScheduleNotification extends Job<
         and(
           eq(medications.id, medicationSchedules.medicationId),
           eq(medications.active, true),
-          eq(medications.userId, this.data.userId)
+          eq(medications.userId, this.payload.userId)
         )
       )
 
@@ -68,15 +60,12 @@ export default class MedicationScheduleNotification extends Job<
     })
 
     if (result.length === 0) {
-      return {
-        message: `Aucun horaire configuré à ${this.data.timeOfDay} pour l'utilisateur #${user.id}`,
-        ok: true,
-      }
+      return
     }
 
     const component = MedicationScheduleComponent.build({
       data: result,
-      timeOfDay: this.data.timeOfDay,
+      timeOfDay: this.payload.timeOfDay,
     })
 
     const channel = (await discord.post(Routes.userChannels(), {
@@ -84,10 +73,5 @@ export default class MedicationScheduleNotification extends Job<
     })) as APIChannel
 
     await discord.post(Routes.channelMessages(channel.id), { body: component.render() })
-
-    return {
-      message: 'Notification envoyé !',
-      ok: true,
-    }
   }
 }

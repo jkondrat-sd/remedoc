@@ -1,4 +1,4 @@
-import { ButtonInteraction } from 'discord.js'
+import { type ButtonInteraction } from 'discord.js'
 
 import { LogLevel, type Client } from '../app/client.js'
 import { buttons } from '../buttons/index.js'

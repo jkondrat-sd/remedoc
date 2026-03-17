@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, CommandInteraction } from 'discord.js'
+import { type ChatInputCommandInteraction, type CommandInteraction } from 'discord.js'
 
 import { type Client, LogLevel } from '../app/client.js'
 

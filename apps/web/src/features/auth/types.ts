@@ -1,4 +1,3 @@
-import type { InferResponseType } from '@repo/rpc/types'
-import type { client } from '@/lib/client'
+import type { Route } from '@repo/rpc/types'
 
-export type User = InferResponseType<typeof client.auth.me.$get>
+export type User = Route.Response<'show_user_info'>

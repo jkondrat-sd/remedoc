@@ -1,6 +1,6 @@
 import { ErrorComponent } from '@repo/discord/components'
 import { TuyauHTTPError } from '@repo/rpc/client'
-import { ChatInputCommandInteraction, DiscordAPIError, MessageFlags } from 'discord.js'
+import { type ChatInputCommandInteraction, DiscordAPIError, MessageFlags } from 'discord.js'
 
 // Le but est d'ajouter des erreurs de discord ici pour les gérer plus facilement
 // elles seront mise à jour au fur et à mesure des erreurs possibles
@@ -28,8 +28,8 @@ export async function handleCommandError(
     } else if (error instanceof DiscordAPIError) {
       message = ERROR_MESSAGES.get(Number(error.code)) || `Erreur Discord: ${error.message}`
     } else if (error instanceof TuyauHTTPError) {
-      if (typeof (error.value as any).message === 'string') {
-        message = (error.value as any).message
+      if (typeof error.response.message === 'string') {
+        message = error.response.message
       } else {
         message = error.message
       }

@@ -54,9 +54,9 @@ const GuestAuthCallbackRoute = GuestAuthCallbackRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof GuestIndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/medications': typeof DashboardMedicationsRoute
-  '/': typeof GuestIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/auth/callback': typeof GuestAuthCallbackRoute
   '/dashboard/medications/$medicationId': typeof DashboardMedicationsMedicationIdRoute
@@ -81,9 +81,9 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/dashboard'
     | '/dashboard/medications'
-    | '/'
     | '/dashboard/'
     | '/auth/callback'
     | '/dashboard/medications/$medicationId'
@@ -122,7 +122,7 @@ declare module '@tanstack/react-router' {
     '/_guest': {
       id: '/_guest'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof GuestRouteRouteImport
       parentRoute: typeof rootRouteImport
     }

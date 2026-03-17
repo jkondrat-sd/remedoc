@@ -1,8 +1,8 @@
 import { symbols } from '@adonisjs/auth'
-import { AccessToken } from '@adonisjs/auth/access_tokens'
+import { type AccessToken } from '@adonisjs/auth/access_tokens'
 import {
-  AccessTokensGuardUser,
-  AccessTokensUserProviderContract,
+  type AccessTokensGuardUser,
+  type AccessTokensUserProviderContract,
 } from '@adonisjs/auth/types/access_tokens'
 import type { Secret } from '@adonisjs/core/helpers'
 import { eq } from 'drizzle-orm'

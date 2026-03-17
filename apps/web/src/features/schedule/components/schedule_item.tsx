@@ -47,7 +47,9 @@ export function ScheduleItem({ schedule, variant = 'outline', ...props }: Schedu
         <Switch
           checked={schedule.active}
           onCheckedChange={() =>
-            toggleActive({ medicationId: schedule.medicationId, scheduleId: schedule.id })
+            toggleActive({
+              params: { medicationId: schedule.medicationId, scheduleId: schedule.id },
+            })
           }
         />
         <AlertDialog>
@@ -65,7 +67,9 @@ export function ScheduleItem({ schedule, variant = 'outline', ...props }: Schedu
               <AlertDialogClose render={<Button variant="ghost" />}>Annuler</AlertDialogClose>
               <AlertDialogClose
                 onClick={() =>
-                  deleteSchedule({ medicationId: schedule.medicationId, scheduleId: schedule.id })
+                  deleteSchedule({
+                    params: { medicationId: schedule.medicationId, scheduleId: schedule.id },
+                  })
                 }
                 render={<Button variant="destructive" />}
               >

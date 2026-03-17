@@ -14,7 +14,7 @@ export default defineCommand({
 
     const discordId = interaction.user.id
 
-    const { data, error } = await rpc.discord({ discordId }).schedules.$get()
+    const [data, error] = await rpc.api.listUserSchedule({ params: { discordId } }).safe()
 
     if (error) {
       await handleCommandError(error, interaction)

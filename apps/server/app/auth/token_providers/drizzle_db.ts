@@ -1,7 +1,7 @@
 import { AccessToken } from '@adonisjs/auth/access_tokens'
 import {
-  AccessTokenDbColumns,
-  AccessTokensProviderContract,
+  type AccessTokenDbColumns,
+  type AccessTokensProviderContract,
 } from '@adonisjs/auth/types/access_tokens'
 import { RuntimeException } from '@adonisjs/core/exceptions'
 import type { Secret } from '@adonisjs/core/helpers'
@@ -10,7 +10,7 @@ import { inspect } from 'node:util'
 
 import type { DrizzleDbAccessTokensProviderOptions } from '#auth/types'
 import { db } from '#core/services/db/main'
-import { authAccessTokens, User } from '#core/services/db/schema'
+import { authAccessTokens, type User } from '#core/services/db/schema'
 
 export class DrizzleDbAccessTokensProvider implements AccessTokensProviderContract<User> {
   /**

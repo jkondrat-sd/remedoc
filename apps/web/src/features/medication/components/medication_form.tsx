@@ -38,11 +38,21 @@ export function MedicationForm() {
       instructions: '',
     },
     onSubmit: async ({ value }) => {
-      await createMedication(value, {
-        onSuccess: () => {
-          form.reset()
+      await createMedication(
+        {
+          body: {
+            ...value,
+            dosage: value.dosage.length ? value.dosage : null,
+            form: value.form.length ? value.form : null,
+            instructions: value.instructions.length ? value.instructions : null,
+          },
         },
-      })
+        {
+          onSuccess: () => {
+            form.reset()
+          },
+        }
+      )
     },
   })
 

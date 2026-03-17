@@ -47,7 +47,7 @@ function RouteComponent() {
         <Button
           variant="secondary"
           disabled={toggleArchiveIsPending}
-          onClick={() => toggleArchive(medication.id)}
+          onClick={() => toggleArchive({ params: { medicationId: medication.id } })}
         >
           {medication.active ? <ArchiveIcon /> : <ArchiveRestoreIcon />}
           {medication.active ? 'Archiver' : 'Restaurer'}

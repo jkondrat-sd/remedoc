@@ -1,3 +1,3 @@
-import { DefineButtonOptions } from '../types.js'
+import { type DefineButtonOptions } from '../types.js'
 
 export const buttons: Array<DefineButtonOptions> = []

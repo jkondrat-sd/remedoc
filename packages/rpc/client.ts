@@ -1,11 +1,13 @@
-import { ApiDefinition, createTuyau, TuyauOptions } from "@tuyau/client";
-export { TuyauHTTPError } from '@tuyau/client'
+import { createTuyau } from "@tuyau/core/client";
+import type { TuyauConfiguration } from "@tuyau/core/types";
 
-import { api } from '@repo/server/api'
+import { registry } from '@repo/server/registry';
 
-export function createClient<T extends ApiDefinition>(options: Omit<TuyauOptions<T>, 'api'>) {
+export function createClient(options: Omit<TuyauConfiguration<any>, 'registry'>) {
   return createTuyau({
-    api,
-    ...options
+    registry,
+    ...options,
   })
 }
+
+export { TuyauHTTPError } from '@tuyau/core/client'
