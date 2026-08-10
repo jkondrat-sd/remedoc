@@ -4,6 +4,7 @@
   "private": "true",
   "exports": {
     "./client": "./client.ts",
+    "./data": "./data.ts",
     "./types": "./types.ts"
   },
   "dependencies": {

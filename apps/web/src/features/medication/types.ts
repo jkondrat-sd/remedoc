@@ -1,3 +1,3 @@
-import type { Route } from '@repo/rpc/types'
+import type { Data } from '@repo/rpc/data'
 
-export type Medication = Route.Response<'list_medication'>[number]
+export type Medication = Data.Medication.Medication

@@ -50,6 +50,7 @@ export default defineConfig({
     () => import('@adonisjs/auth/auth_provider'),
     () => import('@adonisjs/redis/redis_provider'),
     () => import('@adonisjs/queue/queue_provider'),
+    () => import('#core/providers/api_provider'),
   ],
 
   /*
@@ -122,6 +123,12 @@ export default defineConfig({
           enabled: true,
           source: './app',
           glob: ['**/*_controller.ts'],
+          importAlias: '#app',
+        },
+        transformers: {
+          enabled: true,
+          source: './app',
+          glob: ['**/*_transformer.ts'],
           importAlias: '#app',
         },
       }),

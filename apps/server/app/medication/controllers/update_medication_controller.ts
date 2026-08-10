@@ -4,13 +4,13 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { updateMedicationSchema } from '#core/services/db/validator'
 import { validateUsingZod } from '#core/utils'
 import { MedicationRepository } from '#medication/repositories/medication_repository'
-import { MedicationViewModel } from '#medication/view_models/medication_view_model'
+import MedicationTransformer from '#medication/transformers/medication_transformer'
 
 @inject()
 export default class UpdateMedicationController {
   constructor(private medicationRepository: MedicationRepository) {}
 
-  async handle({ request, response, auth, params }: HttpContext) {
+  async handle({ request, response, auth, params, serialize }: HttpContext) {
     const user = auth.use('api').getUserOrFail()
     const payload = validateUsingZod({ schema: updateMedicationSchema, data: request.all() })
 
@@ -22,6 +22,6 @@ export default class UpdateMedicationController {
 
     const updated = await this.medicationRepository.update(medication.id, payload)
 
-    return response.ok(MedicationViewModel.fromDomain(updated).serialize())
+    return serialize.withoutWrapping(MedicationTransformer.transform(updated))
   }
 }

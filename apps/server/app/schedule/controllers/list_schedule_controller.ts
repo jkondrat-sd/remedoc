@@ -3,7 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import { MedicationRepository } from '#medication/repositories/medication_repository'
 import { MedicationScheduleRepository } from '#schedule/repositories/medication_schedule_repository'
-import { MedicationScheduleViewModel } from '#schedule/view_models/medication_schedule_view_model'
+import MedicationScheduleTransformer from '#schedule/transformers/medication_schedule_transformer'
 
 @inject()
 export default class ListScheduleController {
@@ -12,7 +12,7 @@ export default class ListScheduleController {
     private medicationRepository: MedicationRepository
   ) {}
 
-  async handle({ auth, response, params }: HttpContext) {
+  async handle({ auth, response, params, serialize }: HttpContext) {
     const user = auth.use('api').getUserOrFail()
 
     const medication = await this.medicationRepository.findById(params.medicationId)
@@ -23,8 +23,6 @@ export default class ListScheduleController {
 
     const schedules = await this.scheduleRepository.findByMedication(medication.id)
 
-    return response.ok(
-      schedules.map((schedule) => MedicationScheduleViewModel.fromDomain(schedule).serialize())
-    )
+    return serialize.withoutWrapping(MedicationScheduleTransformer.transform(schedules))
   }
 }

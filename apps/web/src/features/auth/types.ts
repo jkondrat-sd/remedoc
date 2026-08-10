@@ -1,3 +1,3 @@
-import type { Route } from '@repo/rpc/types'
+import type { Data } from '@repo/rpc/data'
 
-export type User = Route.Response<'show_user_info'>
+export type User = Data.Auth.User

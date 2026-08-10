@@ -2,13 +2,13 @@ import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
 import { MedicationRepository } from '#medication/repositories/medication_repository'
-import { MedicationViewModel } from '#medication/view_models/medication_view_model'
+import MedicationTransformer from '#medication/transformers/medication_transformer'
 
 @inject()
 export default class ShowMedicationController {
   constructor(private medicationRepository: MedicationRepository) {}
 
-  async handle({ auth, response, params }: HttpContext) {
+  async handle({ auth, response, params, serialize }: HttpContext) {
     const user = auth.use('api').getUserOrFail()
 
     const medication = await this.medicationRepository.findById(params.medicationId)
@@ -17,6 +17,6 @@ export default class ShowMedicationController {
       return response.notFound({ message: 'Médicament introuvable' })
     }
 
-    return response.ok(MedicationViewModel.fromDomain(medication).serialize())
+    return serialize.withoutWrapping(MedicationTransformer.transform(medication))
   }
 }

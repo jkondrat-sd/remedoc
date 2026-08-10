@@ -1,11 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-import { UserViewModel } from '#auth/view_models/user_view_model'
+import UserTransformer from '#auth/transformers/user_transformer'
 
 export default class ShowUserInfoController {
-  async handle({ auth, response }: HttpContext) {
+  async handle({ auth, serialize }: HttpContext) {
     const user = auth.use('api').getUserOrFail()
 
-    return response.json(UserViewModel.fromDomain(user).serialize())
+    return serialize.withoutWrapping(UserTransformer.transform(user))
   }
 }

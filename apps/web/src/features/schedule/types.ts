@@ -1,3 +1,3 @@
-import type { Route } from '@repo/rpc/types'
+import type { Data } from '@repo/rpc/data'
 
-export type Schedule = Route.Response<'list_schedule'>[number]
+export type Schedule = Data.Schedule.MedicationSchedule
