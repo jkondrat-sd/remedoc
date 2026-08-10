@@ -8,9 +8,9 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
-import { FieldsetLegend } from '@/components/ui/fieldset'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useUpdateMedicationMutation } from '../mutations'
@@ -70,7 +70,7 @@ export function MedicationEditForm({ medication }: MedicationEditFormProps) {
 
   return (
     <FieldSet>
-      <FieldsetLegend>Informations</FieldsetLegend>
+      <FieldLegend>Informations</FieldLegend>
       <form
         id="medication-form"
         onSubmit={(event) => {
