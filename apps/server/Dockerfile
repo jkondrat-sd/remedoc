@@ -13,7 +13,7 @@ COPY . .
 FROM installer AS build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm build
-RUN pnpm deploy --filter=server --prod /prod/server
+RUN pnpm deploy --filter=server --prod --legacy /prod/server
 
 # Production stage
 FROM base

@@ -4,8 +4,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArchiveIcon, ArchiveRestoreIcon, ArrowLeftIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Field, FieldSet } from '@/components/ui/field'
-import { FieldsetLegend } from '@/components/ui/fieldset'
+import { Field, FieldLegend, FieldSet } from '@/components/ui/field'
 import {
   Layout,
   LayoutDescription,
@@ -47,7 +46,7 @@ function RouteComponent() {
         <Button
           variant="secondary"
           disabled={toggleArchiveIsPending}
-          onClick={() => toggleArchive(medication.id)}
+          onClick={() => toggleArchive({ params: { medicationId: medication.id } })}
         >
           {medication.active ? <ArchiveIcon /> : <ArchiveRestoreIcon />}
           {medication.active ? 'Archiver' : 'Restaurer'}
@@ -55,7 +54,7 @@ function RouteComponent() {
       </Field>
       <MedicationEditForm medication={medication} />
       <FieldSet>
-        <FieldsetLegend>Horaires</FieldsetLegend>
+        <FieldLegend>Horaires</FieldLegend>
         <ScheduleItemList medicationId={medication.id} />
         <MedicationScheduleForm medicationId={medication.id} />
       </FieldSet>

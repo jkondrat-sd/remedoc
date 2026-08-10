@@ -100,7 +100,7 @@ export function NavUser({ user }: NavUserProps) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem disabled={logoutIsPending} onClick={() => logout()}>
+            <DropdownMenuItem disabled={logoutIsPending} onClick={() => logout({})}>
               <LogOutIcon />
               Se déconnecter
             </DropdownMenuItem>

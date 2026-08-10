@@ -1,4 +1,3 @@
-import type { client } from '@/lib/client'
-import type { InferResponseType } from '@repo/rpc/types'
+import type { Data } from '@repo/rpc/data'
 
-export type Medication = InferResponseType<typeof client.medications.$get>[number]
+export type Medication = Data.Medication.Medication

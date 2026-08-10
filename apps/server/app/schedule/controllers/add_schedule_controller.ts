@@ -6,7 +6,7 @@ import { createMedicationScheduleSchema } from '#core/services/db/validator'
 import { validateUsingZod } from '#core/utils'
 import { MedicationRepository } from '#medication/repositories/medication_repository'
 import { MedicationScheduleRepository } from '#schedule/repositories/medication_schedule_repository'
-import { MedicationScheduleViewModel } from '#schedule/view_models/medication_schedule_view_model'
+import MedicationScheduleTransformer from '#schedule/transformers/medication_schedule_transformer'
 
 @inject()
 export default class AddScheduleController {
@@ -15,7 +15,7 @@ export default class AddScheduleController {
     private medicationScheduleRepository: MedicationScheduleRepository
   ) {}
 
-  async handle({ params, request, response, auth }: HttpContext) {
+  async handle({ params, request, response, auth, serialize }: HttpContext) {
     const user = auth.use('api').getUserOrFail()
     const payload = validateUsingZod({
       schema: createMedicationScheduleSchema,
@@ -35,6 +35,6 @@ export default class AddScheduleController {
 
     await emitter.emit('setup:user-schedule', { userId: user.id, timeOfDay: schedule.timeOfDay })
 
-    return response.json(MedicationScheduleViewModel.fromDomain(schedule).serialize())
+    return serialize.withoutWrapping(MedicationScheduleTransformer.transform(schedule))
   }
 }

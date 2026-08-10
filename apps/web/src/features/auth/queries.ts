@@ -1,7 +1,7 @@
-import { queryOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
-import { client } from '@/lib/client'
+import { tuyau } from '@/lib/client'
 
 export function useAuthQuery() {
   const queryClient = useQueryClient()
@@ -18,16 +18,12 @@ export function useAuthQuery() {
 }
 
 export function authQueryOptions() {
-  return queryOptions({
-    queryKey: ['auth'],
-    queryFn: async () => {
-      const { data, error } = await client.auth.me.$get()
-      if (error) {
-        throw error
-      }
-      return data
-    },
-    retry: 1,
-    staleTime: Infinity,
-  })
+  return tuyau.showUserInfo.queryOptions(
+    {},
+    {
+      retry: 1,
+      staleTime: Infinity,
+      gcTime: Infinity,
+    }
+  )
 }

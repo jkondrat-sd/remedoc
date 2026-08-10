@@ -1,4 +1,3 @@
-import type { InferResponseType } from '@repo/rpc/types'
-import type { client } from '@/lib/client'
+import type { Data } from '@repo/rpc/data'
 
-export type User = InferResponseType<typeof client.auth.me.$get>
+export type User = Data.Auth.User

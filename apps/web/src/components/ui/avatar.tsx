@@ -1,4 +1,4 @@
-import { Avatar as AvatarPrimitive } from '@base-ui-components/react/avatar'
+import { Avatar as AvatarPrimitive } from '@base-ui/react/avatar'
 
 import { cn } from '@/lib/utils'
 
@@ -35,4 +35,4 @@ function AvatarFallback({ className, ...props }: AvatarPrimitive.Fallback.Props)
   )
 }
 
-export { Avatar, AvatarImage, AvatarFallback }
+export { Avatar, AvatarFallback, AvatarImage }

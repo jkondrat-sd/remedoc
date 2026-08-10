@@ -11,4 +11,4 @@ export const rpc = createClient({
       },
     ],
   },
-}).api
+})

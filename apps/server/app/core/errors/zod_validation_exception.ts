@@ -1,6 +1,6 @@
 import { Exception } from '@adonisjs/core/exceptions'
 import type { HttpContext } from '@adonisjs/core/http'
-import * as z from 'zod'
+import type * as z from 'zod'
 
 type ExceptionOptions = NonNullable<ConstructorParameters<typeof Exception>[1]>
 

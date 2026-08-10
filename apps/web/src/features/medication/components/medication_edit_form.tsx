@@ -8,9 +8,9 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
-import { FieldsetLegend } from '@/components/ui/fieldset'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useUpdateMedicationMutation } from '../mutations'
@@ -43,22 +43,34 @@ export function MedicationEditForm({ medication }: MedicationEditFormProps) {
       instructions: medication.instructions || '',
     },
     onSubmit: async ({ value }) => {
-      await updateMedication(value, {
-        onSuccess: (data) => {
-          form.reset({
-            name: data.name,
-            dosage: data.dosage || '',
-            form: data.form || '',
-            instructions: data.instructions || '',
-          })
+      await updateMedication(
+        {
+          params: { medicationId: medication.id },
+          //@ts-ignore
+          body: {
+            ...value,
+            dosage: value.dosage.length ? value.dosage : null,
+            form: value.form.length ? value.form : null,
+            instructions: value.instructions.length ? value.instructions : null,
+          },
         },
-      })
+        {
+          onSuccess: (data) => {
+            form.reset({
+              name: data.name,
+              dosage: data.dosage || '',
+              form: data.form || '',
+              instructions: data.instructions || '',
+            })
+          },
+        }
+      )
     },
   })
 
   return (
     <FieldSet>
-      <FieldsetLegend>Informations</FieldsetLegend>
+      <FieldLegend>Informations</FieldLegend>
       <form
         id="medication-form"
         onSubmit={(event) => {

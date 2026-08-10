@@ -9,37 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as GuestRouteRouteImport } from './routes/_guest/route'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as GuestIndexRouteImport } from './routes/_guest/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardMedicationsRouteImport } from './routes/dashboard/medications'
-import { Route as DashboardMedicationsMedicationIdRouteImport } from './routes/dashboard/medications_.$medicationId'
 import { Route as GuestAuthCallbackRouteImport } from './routes/_guest/auth.callback'
+import { Route as DashboardMedicationsMedicationIdRouteImport } from './routes/dashboard/medications_.$medicationId'
 
-const DashboardRouteRoute = DashboardRouteRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const GuestRouteRoute = GuestRouteRouteImport.update({
   id: '/_guest',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardRouteRoute,
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const GuestIndexRoute = GuestIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => GuestRouteRoute,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardMedicationsRoute = DashboardMedicationsRouteImport.update({
   id: '/medications',
   path: '/medications',
   getParentRoute: () => DashboardRouteRoute,
+} as any)
+const GuestAuthCallbackRoute = GuestAuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => GuestRouteRoute,
 } as any)
 const DashboardMedicationsMedicationIdRoute =
   DashboardMedicationsMedicationIdRouteImport.update({
@@ -47,16 +52,11 @@ const DashboardMedicationsMedicationIdRoute =
     path: '/medications/$medicationId',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
-const GuestAuthCallbackRoute = GuestAuthCallbackRouteImport.update({
-  id: '/auth/callback',
-  path: '/auth/callback',
-  getParentRoute: () => GuestRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof GuestIndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/medications': typeof DashboardMedicationsRoute
-  '/': typeof GuestIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/auth/callback': typeof GuestAuthCallbackRoute
   '/dashboard/medications/$medicationId': typeof DashboardMedicationsMedicationIdRoute
@@ -81,9 +81,9 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/dashboard'
     | '/dashboard/medications'
-    | '/'
     | '/dashboard/'
     | '/auth/callback'
     | '/dashboard/medications/$medicationId'
@@ -112,26 +112,19 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_guest': {
+      id: '/_guest'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof GuestRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_guest': {
-      id: '/_guest'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof GuestRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
     }
     '/_guest/': {
       id: '/_guest/'
@@ -140,18 +133,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestIndexRouteImport
       parentRoute: typeof GuestRouteRoute
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/medications': {
       id: '/dashboard/medications'
       path: '/medications'
       fullPath: '/dashboard/medications'
       preLoaderRoute: typeof DashboardMedicationsRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/medications_/$medicationId': {
-      id: '/dashboard/medications_/$medicationId'
-      path: '/medications/$medicationId'
-      fullPath: '/dashboard/medications/$medicationId'
-      preLoaderRoute: typeof DashboardMedicationsMedicationIdRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/_guest/auth/callback': {
@@ -160,6 +153,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/callback'
       preLoaderRoute: typeof GuestAuthCallbackRouteImport
       parentRoute: typeof GuestRouteRoute
+    }
+    '/dashboard/medications_/$medicationId': {
+      id: '/dashboard/medications_/$medicationId'
+      path: '/medications/$medicationId'
+      fullPath: '/dashboard/medications/$medicationId'
+      preLoaderRoute: typeof DashboardMedicationsMedicationIdRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
   }
 }

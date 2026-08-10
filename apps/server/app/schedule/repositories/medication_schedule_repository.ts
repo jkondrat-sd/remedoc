@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm'
-import { DateTime } from 'luxon'
+import { type DateTime } from 'luxon'
 
 import { db } from '#core/services/db/main'
 import {

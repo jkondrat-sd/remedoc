@@ -84,7 +84,7 @@ const columns: ColumnDef<Medication>[] = [
             variant="ghost"
             size="icon-sm"
             disabled={isPending}
-            onClick={() => toggleArchive(row.original.id)}
+            onClick={() => toggleArchive({ params: { medicationId: row.original.id } })}
           >
             <ArchiveIcon />
           </Button>

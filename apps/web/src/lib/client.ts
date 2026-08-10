@@ -1,9 +1,11 @@
 import { createClient } from '@repo/rpc/client'
+import { createTuyauReactQueryClient } from '@tuyau/react-query'
 
 import { useAuthTokenStore } from '@/features/auth/stores/auth_token_store'
 
 export const client = createClient({
   baseUrl: import.meta.env.VITE_API_URL || window.location.origin,
+  headers: { Accept: 'application/json' },
   hooks: {
     beforeRequest: [
       (request) => {
@@ -24,4 +26,8 @@ export const client = createClient({
       },
     ],
   },
-}).api
+})
+
+export const urlFor = client.urlFor
+
+export const tuyau = createTuyauReactQueryClient({ client })

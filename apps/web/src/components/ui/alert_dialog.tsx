@@ -1,4 +1,4 @@
-import { AlertDialog as AlertDialogPrimitive } from '@base-ui-components/react/alert-dialog'
+import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react/alert-dialog'
 
 import { cn } from '@/lib/utils'
 
@@ -114,16 +114,16 @@ function AlertDialogClose(props: AlertDialogPrimitive.Close.Props) {
 
 export {
   AlertDialog,
-  AlertDialogPortal,
   AlertDialogBackdrop,
-  AlertDialogBackdrop as AlertDialogOverlay,
-  AlertDialogTrigger,
-  AlertDialogPopup,
-  AlertDialogPopup as AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
   AlertDialogClose,
+  AlertDialogPopup as AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogBackdrop as AlertDialogOverlay,
+  AlertDialogPopup,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   AlertDialogViewport,
 }

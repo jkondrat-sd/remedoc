@@ -1,4 +1,4 @@
-import { Tooltip as TooltipPrimitive } from '@base-ui-components/react/tooltip'
+import { Tooltip as TooltipPrimitive } from '@base-ui/react/tooltip'
 
 import { cn } from '@/lib/utils'
 
@@ -54,10 +54,10 @@ function TooltipPopup({
 }
 
 export {
-  TooltipCreateHandle,
-  TooltipProvider,
   Tooltip,
-  TooltipTrigger,
-  TooltipPopup,
   TooltipPopup as TooltipContent,
+  TooltipCreateHandle,
+  TooltipPopup,
+  TooltipProvider,
+  TooltipTrigger,
 }

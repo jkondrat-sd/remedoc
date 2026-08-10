@@ -4,10 +4,11 @@
   "private": "true",
   "exports": {
     "./client": "./client.ts",
+    "./data": "./data.ts",
     "./types": "./types.ts"
   },
   "dependencies": {
     "@repo/server": "workspace:^",
-    "@tuyau/client": "^0.2.10"
+    "@tuyau/core": "^1.2.2"
   }
 }

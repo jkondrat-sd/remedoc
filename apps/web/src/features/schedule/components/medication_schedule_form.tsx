@@ -43,11 +43,22 @@ export function MedicationScheduleForm({ medicationId }: MedicationScheduleFormP
       notes: '',
     },
     onSubmit: async ({ value }) => {
-      await addSchedule(value, {
-        onSuccess: () => {
-          form.reset()
+      await addSchedule(
+        {
+          params: { medicationId },
+          //@ts-ignore
+          body: {
+            ...value,
+            daysOfWeek: value.daysOfWeek.length > 0 ? value.daysOfWeek : null,
+            notes: value.notes.length > 0 ? value.notes : null,
+          },
         },
-      })
+        {
+          onSuccess: () => {
+            form.reset()
+          },
+        }
+      )
     },
   })
 

@@ -1,4 +1,4 @@
-import { AutocompleteInteraction } from 'discord.js'
+import { type AutocompleteInteraction } from 'discord.js'
 
 import { type Client, LogLevel } from '../app/client.js'
 
