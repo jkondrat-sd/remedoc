@@ -3,8 +3,7 @@ import { and, eq } from 'drizzle-orm'
 
 import { db } from '#core/services/db/main'
 import { medications, medicationSchedules, users } from '#core/services/db/schema'
-import MedicationTransformer from '#medication/transformers/medication_transformer'
-import MedicationScheduleTransformer from '#schedule/transformers/medication_schedule_transformer'
+import ListUserScheduleTransformer from '#discord/transformers/list_user_schedule_transformer'
 
 export default class ListUserScheduleController {
   async handle({ response, params, serialize }: HttpContext) {
@@ -34,11 +33,6 @@ export default class ListUserScheduleController {
         )
       )
 
-    return serialize.withoutWrapping(
-      result.map((item) => ({
-        schedule: MedicationScheduleTransformer.transform(item.schedule),
-        medication: MedicationTransformer.transform(item.medication),
-      }))
-    )
+    return serialize.withoutWrapping(ListUserScheduleTransformer.transform(result))
   }
 }

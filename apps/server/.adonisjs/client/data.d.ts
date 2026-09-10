@@ -8,6 +8,7 @@ import type { InferData, InferVariants } from '@adonisjs/core/types/transformers
 import type AuthUserTransformer from '#app/auth/transformers/user_transformer'
 import type MedicationMedicationTransformer from '#app/medication/transformers/medication_transformer'
 import type ScheduleMedicationScheduleTransformer from '#app/schedule/transformers/medication_schedule_transformer'
+import type DiscordListUserScheduleTransformer from '#app/discord/transformers/list_user_schedule_transformer'
 
 export namespace Data {
   export namespace Auth {
@@ -26,6 +27,12 @@ export namespace Data {
     export type MedicationSchedule = InferData<ScheduleMedicationScheduleTransformer>
     export namespace MedicationSchedule {
       export type Variants = InferVariants<ScheduleMedicationScheduleTransformer>
+    }
+  }
+  export namespace Discord {
+    export type ListUserSchedule = InferData<DiscordListUserScheduleTransformer>
+    export namespace ListUserSchedule {
+      export type Variants = InferVariants<DiscordListUserScheduleTransformer>
     }
   }
 }
